@@ -1,0 +1,106 @@
+[
+  {
+    "public_path": "archive/methods/run_incidence_beta_1_1.py",
+    "source_commit": "05df483",
+    "source_script": "run_incidence_beta_1_1.py",
+    "source_sha256": "dd9508691e89a81a0824eba1844a7da40daaa4577f5f36375ce8cf19dc7bdaff",
+    "functions": [
+      {
+        "name": "safe_div",
+        "original_start_line": 141,
+        "original_end_line": 144
+      },
+      {
+        "name": "component_values",
+        "original_start_line": 147,
+        "original_end_line": 169
+      },
+      {
+        "name": "pairwise_abc",
+        "original_start_line": 172,
+        "original_end_line": 189
+      },
+      {
+        "name": "multiple_site_summary",
+        "original_start_line": 226,
+        "original_end_line": 254
+      }
+    ]
+  },
+  {
+    "public_path": "archive/methods/run_sections_1_2_to_1_4.py",
+    "source_commit": "05df483",
+    "source_script": "run_sections_1_2_to_1_4.py",
+    "source_sha256": "4f8259c7180cebf8015d857c61a61faf0030187833ed71e12f848a8e8ba654bf",
+    "functions": [
+      {
+        "name": "safe_div",
+        "original_start_line": 148,
+        "original_end_line": 149
+      },
+      {
+        "name": "bray_components",
+        "original_start_line": 152,
+        "original_end_line": 184
+      },
+      {
+        "name": "tree_abundance_components",
+        "original_start_line": 187,
+        "original_end_line": 232
+      },
+      {
+        "name": "dbrda_r2",
+        "original_start_line": 1055,
+        "original_end_line": 1082
+      }
+    ]
+  },
+  {
+    "public_path": "archive/methods/run_sections_2_to_3.py",
+    "source_commit": "05df483",
+    "source_script": "run_sections_2_to_3.py",
+    "source_sha256": "bd8e5c0d270db8d06249426c2b73cda244892f6e77e0c3d4fd4d5b3204bdf011",
+    "functions": [
+      {
+        "name": "safe_div",
+        "original_start_line": 169,
+        "original_end_line": 170
+      },
+      {
+        "name": "components_from_feature_values",
+        "original_start_line": 173,
+        "original_end_line": 207
+      },
+      {
+        "name": "gower_center",
+        "original_start_line": 367,
+        "original_end_line": 371
+      },
+      {
+        "name": "design_matrix",
+        "original_start_line": 374,
+        "original_end_line": 376
+      },
+      {
+        "name": "permanova_f",
+        "original_start_line": 379,
+        "original_end_line": 393
+      },
+      {
+        "name": "permuted_label_arrays",
+        "original_start_line": 396,
+        "original_end_line": 416
+      },
+      {
+        "name": "permanova_test",
+        "original_start_line": 419,
+        "original_end_line": 439
+      },
+      {
+        "name": "bh_fdr",
+        "original_start_line": 507,
+        "original_end_line": 518
+      }
+    ]
+  }
+]

@@ -1,0 +1,38 @@
+{
+  "data_origin_zh": "全部群落观测为从零生成的合成数据；不拟合真实值或真实分布",
+  "seed": 20260907,
+  "raw_records": 47,
+  "retained_taxa": 37,
+  "sample_count": 24,
+  "no_private_input_read": true,
+  "gower": {
+    "undefined_pair_count": 5,
+    "undefined_pair_indices": [
+      [
+        4,
+        29
+      ],
+      [
+        14,
+        32
+      ],
+      [
+        18,
+        32
+      ],
+      [
+        29,
+        32
+      ],
+      [
+        32,
+        33
+      ]
+    ],
+    "zero_pair_count": 39,
+    "fill_value": 1.0,
+    "missing_rule_zh": "成对剔除缺失；无共同有效性状的距离按当前可得最大值填补，属于明确假设"
+  },
+  "statistical_scope_zh": "九个总差异矩阵；同点受限精确枚举 4096 标签排列；两项检验均采用明确的 Lingoes 校正；BH 在九个响应内分别校正",
+  "not_reproduced_zh": "没有重现真实样本、论文 p 值、环境驱动、TBI 或四维凸包敏感性分析"
+}

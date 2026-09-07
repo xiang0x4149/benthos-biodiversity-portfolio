@@ -1,0 +1,86 @@
+[
+  {
+    "path": "data/traits/taxa.csv",
+    "title_zh": "分类单元与分类阶元",
+    "source_zh": "后续分类核查资料；不含原始行号、样本观测及原始输入名称映射",
+    "keys_zh": "taxon_id",
+    "rows": 37
+  },
+  {
+    "path": "data/traits/trait_schema.csv",
+    "title_zh": "性状编码字典",
+    "source_zh": "性状标准化阶段产物",
+    "keys_zh": "output_column",
+    "rows": 37
+  },
+  {
+    "path": "data/traits/trait_matrix.csv",
+    "title_zh": "审阅后的真实性状矩阵",
+    "source_zh": "2026-05-15 审阅补值矩阵；不是群落密度或生物量矩阵",
+    "keys_zh": "taxon_id；各性状列连接 output_column",
+    "rows": 37
+  },
+  {
+    "path": "data/traits/trait_values.csv",
+    "title_zh": "单元格来源追溯",
+    "source_zh": "同一入库运行的长表；矩阵便利视图与来源长表分别服务计算和审计",
+    "keys_zh": "taxon_id + output_column；source_id_used；review_decision_ids_used",
+    "rows": 1369
+  },
+  {
+    "path": "data/traits/sources.csv",
+    "title_zh": "来源登记",
+    "source_zh": "整理已有来源登记与本轮来源表；移除本机缓存路径",
+    "keys_zh": "source_id",
+    "rows": 22
+  },
+  {
+    "path": "data/traits/evidence.csv",
+    "title_zh": "外部检索证据摘要",
+    "source_zh": "自行检索整理的文献证据摘要；未附原文文件",
+    "keys_zh": "evidence_id；source_id",
+    "rows": 21
+  },
+  {
+    "path": "data/traits/review_decisions.csv",
+    "title_zh": "候选审阅决定",
+    "source_zh": "合并 2026-05-05 的 62 条与 2026-05-15 的 74 条审阅；早期批次未记录的候选及证据编号留空；同属种后期例外也保留",
+    "keys_zh": "review_decision_id；review_batch；candidate_id；taxon_id + output_column；evidence_id",
+    "rows": 137
+  },
+  {
+    "path": "data/traits/conflicts.csv",
+    "title_zh": "未合入的冲突单元格",
+    "source_zh": "已接受候选彼此矛盾时继续保持缺失；不为提高覆盖率强行决定",
+    "keys_zh": "merge_cell_id；taxon_id + output_column；review_decision_ids",
+    "rows": 6
+  },
+  {
+    "path": "data/historical/beta_summary.csv",
+    "title_zh": "历史真实结果：分季节汇总",
+    "source_zh": "05df483 中的图源；公开校正功能有无总量与组分的系数对应；没有样点对明细",
+    "keys_zh": "bar_id",
+    "rows": 18
+  },
+  {
+    "path": "data/historical/season_tests.csv",
+    "title_zh": "历史真实结果：季节检验关键行",
+    "source_zh": "来自 05df483 保存的早期报告配套汇总表；无原始样本数值",
+    "keys_zh": "matrix_label_zh",
+    "rows": 2
+  },
+  {
+    "path": "data/historical/selected_variables.csv",
+    "title_zh": "历史真实结果：入模变量",
+    "source_zh": "来自 05df483 保存的早期报告配套汇总表；无原始样本数值",
+    "keys_zh": "季节字段",
+    "rows": 2
+  },
+  {
+    "path": "data/historical/driver_models.csv",
+    "title_zh": "历史真实结果：驱动模型汇总",
+    "source_zh": "来自 05df483 保存的早期报告配套汇总表；无原始样本数值",
+    "keys_zh": "season_zh + response_matrix_zh + model_scope_zh",
+    "rows": 36
+  }
+]

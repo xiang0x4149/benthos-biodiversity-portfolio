@@ -1,0 +1,13 @@
+.venv/
+.r-lib/
+__pycache__/
+*.pyc
+.cache/
+.env
+.env.*
+*.zip
+*.tar
+*.tar.gz
+private/
+raw_private/
+.DS_Store

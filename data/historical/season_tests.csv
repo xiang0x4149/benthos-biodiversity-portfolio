@@ -1,0 +1,3 @@
+effect_scope_zh,matrix_label_zh,pseudo_F,R2,PERMANOVA_FDR,PERMDISP_FDR
+全 24 样本配对季节效应（D ~ season_code，置换限制在 site_id 内）,密度-功能-替换组分,14.523,0.398,0.049,0.55
+全 24 样本配对季节效应（D ~ season_code，置换限制在 site_id 内）,密度-功能-总 β 多样性,4.943,0.183,0.049,0.55

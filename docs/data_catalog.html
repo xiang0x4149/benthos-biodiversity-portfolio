@@ -1,0 +1,1917 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>数据阅读目录</title><style>body{font:16px/1.8 "Noto Sans CJK SC","Microsoft YaHei",sans-serif;background:#f2f5ed;color:#213b3d;margin:0}main{max-width:1100px;margin:auto;padding:24px}section{background:#fffef9;border:1px solid #dbe5d9;padding:22px;margin:20px 0;border-radius:12px;scroll-margin-top:70px}nav{position:sticky;top:0;background:#e2edde;padding:15px;display:flex;gap:30px}a{color:#176b62}.table{overflow:auto}table{border-collapse:collapse;font-size:13px;width:100%}td,th{padding:9px;border-bottom:1px solid #dbe5d9;min-width:130px;text-align:left;vertical-align:top}th{background:#e7efe1}summary{cursor:pointer;font-weight:bold}details{margin:12px 0;padding:10px;border-top:1px solid #dbe5d9}p{overflow-wrap:anywhere}</style></head><body><nav><a href="../index.html">项目入口</a><a href="../data_catalog.xlsx">下载 XLSX</a></nav><main><h1>数据目录 · 每张 CSV 的来源、连接键与中文列解释</h1><section><h2>表格如何关联</h2><p>真实性状材料先读 taxa（分类单元），再读 trait_schema（编码定义）和 trait_matrix（分析宽表）；trait_values（来源长表）用 taxon_id + output_column 与宽表对应，再经来源／候选／审阅编号连接 sources、evidence、review_decisions 与 conflicts。分号分隔的编号集合需先拆分再连接。</p><p>trait_values 中 previous_merge_run 表示沿用更早版本；review_decisions 合并两轮共 136 条记录，用 review_batch 区分。FRD 编号来自 5 月 5 日，RGD 编号来自 5 月 15 日；前一批次未保存独立 candidate_id／evidence_id 的字段留空，不补造编号。不是所有沿用值都有审阅编号，但已填写的审阅编号均能连接。性状缺失值是未知，不可视为 0。</p><p>历史统计表仅包含聚合量；不会提供样点观测或两两矩阵。合成观测与合成映射以 record_id 连接，合并输出用 sample_id + taxon_id，配对由 metadata 的 site_id 定义。真实与合成表不能混合用于科学推断。</p><details><summary>常见代码的中文含义</summary><p>incidence：有无；density：密度；biomass：生物量。TD：分类学；FD：功能；PD_proxy：分类树代理。summer／autumn：夏／秋。sorensen 在有无输入下指 Sørensen，数量型对应 Bray–Curtis；jaccard 在有无输入下指 Jaccard。turnover：周转；nestedness_resultant：嵌套结果；replacement：替换；richness_difference：丰富度差异；abundance_difference／abundance_gradient：数量差异／数量梯度；balanced_variation：平衡数量变化。</p><p>GO：开放属级记录；EG：精确属匹配；OS：原始种上卷；SG：同属其他种。accepted_after_user_review：人工审阅接受；eligible_reviewed：已审阅但仍需检查冲突。clear：历史来源标记为清楚，不代表本次独立重查全部原文。</p></details></section><section><details open><summary>推荐阅读顺序（与 XLSX 工作表一致）</summary><ol><li><a href="#table-1">01 分类单元与分类阶元</a></li><li><a href="#table-2">02 性状编码字典</a></li><li><a href="#table-3">03 审阅后的真实性状矩阵</a></li><li><a href="#table-4">04 单元格来源追溯</a></li><li><a href="#table-5">05 来源登记</a></li><li><a href="#table-6">06 外部检索证据摘要</a></li><li><a href="#table-7">07 候选审阅决定</a></li><li><a href="#table-8">08 未合入的冲突单元格</a></li><li><a href="#table-9">09 历史真实结果：分季节汇总</a></li><li><a href="#table-10">10 历史真实结果：季节检验关键行</a></li><li><a href="#table-11">11 历史真实结果：入模变量</a></li><li><a href="#table-12">12 历史真实结果：驱动模型汇总</a></li><li><a href="#table-13">13 合成演示：分类映射</a></li><li><a href="#table-14">14 合成演示：原始观测</a></li><li><a href="#table-15">15 合成演示：配对信息</a></li><li><a href="#table-16">16 合成输出：规则合并后的群落</a></li><li><a href="#table-17">17 合成输出：分季节 β 汇总</a></li><li><a href="#table-18">18 合成输出：配对季节检验</a></li></ol></details></section><section id="table-1"><h2>01 · 分类单元与分类阶元</h2><p><a href="../data/traits/taxa.csv">data/traits/taxa.csv</a> · 37 行 × 8 列</p><p>来源：后续分类核查资料；不含原始行号、样本观测及原始输入名称映射<br>主键／连接键：taxon_id</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>taxon_id（分类单元唯一编号）</th>
+      <th>accepted_or_operational_name（接受名或操作分类单元名）</th>
+      <th>kingdom（界）</th>
+      <th>phylum（门）</th>
+      <th>class（纲）</th>
+      <th>order（目）</th>
+      <th>family（科）</th>
+      <th>genus（属）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sinanodonta_sp.</td>
+      <td>Sinanodonta sp.</td>
+      <td>Animalia</td>
+      <td>Mollusca</td>
+      <td>Bivalvia</td>
+      <td>Unionida</td>
+      <td>Unionidae</td>
+      <td>Sinanodonta</td>
+    </tr>
+    <tr>
+      <td>Pseudovivipara_sp.</td>
+      <td>Pseudovivipara sp.</td>
+      <td>Animalia</td>
+      <td>Mollusca</td>
+      <td>Gastropoda</td>
+      <td>Littorinimorpha</td>
+      <td>Bithyniidae</td>
+      <td>Pseudovivipara</td>
+    </tr>
+    <tr>
+      <td>Glyptotendipes_sp.</td>
+      <td>Glyptotendipes sp.</td>
+      <td>Animalia</td>
+      <td>Arthropoda</td>
+      <td>Insecta</td>
+      <td>Diptera</td>
+      <td>Chironomidae</td>
+      <td>Glyptotendipes</td>
+    </tr>
+    <tr>
+      <td>Lamprotula_sp.</td>
+      <td>Lamprotula sp.</td>
+      <td>Animalia</td>
+      <td>Mollusca</td>
+      <td>Bivalvia</td>
+      <td>Unionida</td>
+      <td>Unionidae</td>
+      <td>Lamprotula</td>
+    </tr>
+    <tr>
+      <td>Rivularia_sp.</td>
+      <td>Rivularia sp.</td>
+      <td>Animalia</td>
+      <td>Mollusca</td>
+      <td>Gastropoda</td>
+      <td>Architaenioglossa</td>
+      <td>Viviparidae</td>
+      <td>Rivularia</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>taxon_id</td>
+      <td>分类单元唯一编号</td>
+    </tr>
+    <tr>
+      <td>accepted_or_operational_name</td>
+      <td>接受名或操作分类单元名</td>
+    </tr>
+    <tr>
+      <td>kingdom</td>
+      <td>界</td>
+    </tr>
+    <tr>
+      <td>phylum</td>
+      <td>门</td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td>纲</td>
+    </tr>
+    <tr>
+      <td>order</td>
+      <td>目</td>
+    </tr>
+    <tr>
+      <td>family</td>
+      <td>科</td>
+    </tr>
+    <tr>
+      <td>genus</td>
+      <td>属</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-2"><h2>02 · 性状编码字典</h2><p><a href="../data/traits/trait_schema.csv">data/traits/trait_schema.csv</a> · 37 行 × 9 列</p><p>来源：性状标准化阶段产物<br>主键／连接键：output_column</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>output_column（标准性状编码列名）</th>
+      <th>standard_trait_group_cn（生物学性状组）</th>
+      <th>standard_trait_id（标准性状编号）</th>
+      <th>standard_modality_id（性状模态编号）</th>
+      <th>standard_name_cn（编码列中文名称）</th>
+      <th>final_data_type（最终编码数据类型）</th>
+      <th>allowed_values（允许取值）</th>
+      <th>standardized_value_meaning_zh（标准值中文含义）</th>
+      <th>missing_value_rule（缺失与不确定值处理规则）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>max_size_coarse__lt_10mm</td>
+      <td>体型/最大尺寸</td>
+      <td>max_size_coarse</td>
+      <td>lt_10mm</td>
+      <td>最大体型较小（约 &lt;10 mm）</td>
+      <td>binary_0_1_NA</td>
+      <td>0;1;NA</td>
+      <td>0=该 modality 不存在/不符合；1=该 modality 存在/符合；NA=无可用来源、源值缺失，或 Korean fuzzy=1 在合并二元列中按规则转为不确定。</td>
+      <td>Dryad 与 Korean 都缺失时 NA；Korean fuzzy=1 转 NA。</td>
+    </tr>
+    <tr>
+      <td>max_size_coarse__ge_approx_10mm</td>
+      <td>体型/最大尺寸</td>
+      <td>max_size_coarse</td>
+      <td>ge_approx_10mm</td>
+      <td>最大体型较大（约 ≥10 mm）</td>
+      <td>binary_0_1_NA</td>
+      <td>0;1;NA</td>
+      <td>0=该 modality 不存在/不符合；1=该 modality 存在/符合；NA=无可用来源、源值缺失，或 Korean fuzzy=1 在合并二元列中按规则转为不确定。</td>
+      <td>Dryad 与 Korean 都缺失时 NA；Korean fuzzy=1 转 NA。</td>
+    </tr>
+    <tr>
+      <td>shape_S1_streamlined</td>
+      <td>体形/水动力形态</td>
+      <td>shape_S1_streamlined</td>
+      <td></td>
+      <td>流线型/扁平或纺锤形</td>
+      <td>korean_fuzzy_0_3_NA</td>
+      <td>0;1;2;3;NA</td>
+      <td>保留 Korean 原始 fuzzy code：0=no confidence/无支持，1=less confident，2=moderately confident，3=highly confident；NA=该 taxon 无可用 Korean 来源或源值缺失。</td>
+      <td>Korean 缺失时 NA；fuzzy code 0/1/2/3 直接保留；Dryad 不填补。</td>
+    </tr>
+    <tr>
+      <td>shape_S2_non_streamlined</td>
+      <td>体形/水动力形态</td>
+      <td>shape_S2_non_streamlined</td>
+      <td></td>
+      <td>非流线型/圆柱圆形钝圆</td>
+      <td>korean_fuzzy_0_3_NA</td>
+      <td>0;1;2;3;NA</td>
+      <td>保留 Korean 原始 fuzzy code：0=no confidence/无支持，1=less confident，2=moderately confident，3=highly confident；NA=该 taxon 无可用 Korean 来源或源值缺失。</td>
+      <td>Korean 缺失时 NA；fuzzy code 0/1/2/3 直接保留；Dryad 不填补。</td>
+    </tr>
+    <tr>
+      <td>armour_AR1_none</td>
+      <td>体表/外骨骼/装甲</td>
+      <td>armour_AR1_none</td>
+      <td></td>
+      <td>无装甲</td>
+      <td>korean_fuzzy_0_3_NA</td>
+      <td>0;1;2;3;NA</td>
+      <td>保留 Korean 原始 fuzzy code：0=no confidence/无支持，1=less confident，2=moderately confident，3=highly confident；NA=该 taxon 无可用 Korean 来源或源值缺失。</td>
+      <td>Korean 缺失时 NA；fuzzy code 0/1/2/3 直接保留；Dryad 不填补。</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>output_column</td>
+      <td>标准性状编码列名</td>
+    </tr>
+    <tr>
+      <td>standard_trait_group_cn</td>
+      <td>生物学性状组</td>
+    </tr>
+    <tr>
+      <td>standard_trait_id</td>
+      <td>标准性状编号</td>
+    </tr>
+    <tr>
+      <td>standard_modality_id</td>
+      <td>性状模态编号</td>
+    </tr>
+    <tr>
+      <td>standard_name_cn</td>
+      <td>编码列中文名称</td>
+    </tr>
+    <tr>
+      <td>final_data_type</td>
+      <td>最终编码数据类型</td>
+    </tr>
+    <tr>
+      <td>allowed_values</td>
+      <td>允许取值</td>
+    </tr>
+    <tr>
+      <td>standardized_value_meaning_zh</td>
+      <td>标准值中文含义</td>
+    </tr>
+    <tr>
+      <td>missing_value_rule</td>
+      <td>缺失与不确定值处理规则</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-3"><h2>03 · 审阅后的真实性状矩阵</h2><p><a href="../data/traits/trait_matrix.csv">data/traits/trait_matrix.csv</a> · 37 行 × 38 列</p><p>来源：2026-05-15 审阅补值矩阵；不是群落密度或生物量矩阵<br>主键／连接键：taxon_id；各性状列连接 output_column</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>taxon_id（分类单元唯一编号）</th>
+      <th>max_size_coarse__lt_10mm（最大体型较小（约 &lt;10 mm））</th>
+      <th>max_size_coarse__ge_approx_10mm（最大体型较大（约 ≥10 mm））</th>
+      <th>shape_S1_streamlined（流线型/扁平或纺锤形）</th>
+      <th>shape_S2_non_streamlined（非流线型/圆柱圆形钝圆）</th>
+      <th>armour_AR1_none（无装甲）</th>
+      <th>armour_AR2_weak（弱装甲）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sinanodonta_sp.</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Pseudovivipara_sp.</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Glyptotendipes_sp.</td>
+      <td>1</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Lamprotula_sp.</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Rivularia_sp.</td>
+      <td>0</td>
+      <td>1</td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Dicrotendipes_sp.</td>
+      <td>1</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>taxon_id</td>
+      <td>分类单元唯一编号</td>
+    </tr>
+    <tr>
+      <td>max_size_coarse__lt_10mm</td>
+      <td>最大体型较小（约 &lt;10 mm）</td>
+    </tr>
+    <tr>
+      <td>max_size_coarse__ge_approx_10mm</td>
+      <td>最大体型较大（约 ≥10 mm）</td>
+    </tr>
+    <tr>
+      <td>shape_S1_streamlined</td>
+      <td>流线型/扁平或纺锤形</td>
+    </tr>
+    <tr>
+      <td>shape_S2_non_streamlined</td>
+      <td>非流线型/圆柱圆形钝圆</td>
+    </tr>
+    <tr>
+      <td>armour_AR1_none</td>
+      <td>无装甲</td>
+    </tr>
+    <tr>
+      <td>armour_AR2_weak</td>
+      <td>弱装甲</td>
+    </tr>
+    <tr>
+      <td>armour_AR3_strong</td>
+      <td>强装甲</td>
+    </tr>
+    <tr>
+      <td>locomotion__burrower_interstitial</td>
+      <td>掘穴/间隙生活</td>
+    </tr>
+    <tr>
+      <td>locomotion__crawler_climber_sprawler</td>
+      <td>爬行/攀爬/匍匐</td>
+    </tr>
+    <tr>
+      <td>locomotion__clinger</td>
+      <td>附着型</td>
+    </tr>
+    <tr>
+      <td>locomotion__mobile_swimmer_planktonic_skater_flier</td>
+      <td>游泳/浮游/滑行/飞行</td>
+    </tr>
+    <tr>
+      <td>feeding_group__collector_gatherer</td>
+      <td>采集-收集者</td>
+    </tr>
+    <tr>
+      <td>feeding_group__collector_filterer</td>
+      <td>采集-过滤者</td>
+    </tr>
+    <tr>
+      <td>feeding_group__scraper_grazer</td>
+      <td>刮食者/牧食者</td>
+    </tr>
+    <tr>
+      <td>feeding_group__shredder</td>
+      <td>撕碎者</td>
+    </tr>
+    <tr>
+      <td>feeding_group__predator_piercer</td>
+      <td>捕食者/刺吸者</td>
+    </tr>
+    <tr>
+      <td>feeding_group__parasite</td>
+      <td>寄生者</td>
+    </tr>
+    <tr>
+      <td>respiration__integument</td>
+      <td>体表呼吸</td>
+    </tr>
+    <tr>
+      <td>respiration__gill</td>
+      <td>鳃呼吸</td>
+    </tr>
+    <tr>
+      <td>respiration__aerial_any</td>
+      <td>任何空气呼吸策略</td>
+    </tr>
+    <tr>
+      <td>dispersal_mode__aquatic_passive</td>
+      <td>水生被动扩散</td>
+    </tr>
+    <tr>
+      <td>dispersal_mode__terrestrial_passive</td>
+      <td>陆生被动扩散</td>
+    </tr>
+    <tr>
+      <td>dispersal_mode__terrestrial_active</td>
+      <td>陆生活跃扩散</td>
+    </tr>
+    <tr>
+      <td>aquatic_stage__egg_larva_aquatic</td>
+      <td>卵和幼体阶段水生</td>
+    </tr>
+    <tr>
+      <td>aquatic_stage__fully_aquatic</td>
+      <td>全生活史水生</td>
+    </tr>
+    <tr>
+      <td>sexual_maturity_duration__short</td>
+      <td>性成熟时间短</td>
+    </tr>
+    <tr>
+      <td>sexual_maturity_duration__long</td>
+      <td>性成熟时间长</td>
+    </tr>
+    <tr>
+      <td>life_span_bin__le_1yr</td>
+      <td>寿命 ≤1 年</td>
+    </tr>
+    <tr>
+      <td>life_span_bin__gt_1yr</td>
+      <td>寿命 &gt;1 年</td>
+    </tr>
+    <tr>
+      <td>voltinism__semivoltine_lt_1_generation_per_year</td>
+      <td>多年一代/半化性（&lt;1 代/年）</td>
+    </tr>
+    <tr>
+      <td>voltinism__univoltine_1_generation_per_year</td>
+      <td>一年一代</td>
+    </tr>
+    <tr>
+      <td>voltinism__multivoltine_gt_1_generation_per_year</td>
+      <td>一年多代</td>
+    </tr>
+    <tr>
+      <td>fertilization_mode__internal</td>
+      <td>体内受精</td>
+    </tr>
+    <tr>
+      <td>fertilization_mode__external</td>
+      <td>体外受精</td>
+    </tr>
+    <tr>
+      <td>oviposition_mode__egg_mass</td>
+      <td>卵块/卵团产卵</td>
+    </tr>
+    <tr>
+      <td>oviposition_mode__ovoviviparity</td>
+      <td>卵胎生</td>
+    </tr>
+    <tr>
+      <td>oviposition_mode__soft_chorion</td>
+      <td>软卵膜</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-4"><h2>04 · 单元格来源追溯</h2><p><a href="../data/traits/trait_values.csv">data/traits/trait_values.csv</a> · 1369 行 × 9 列</p><p>来源：同一入库运行的长表；矩阵便利视图与来源长表分别服务计算和审计<br>主键／连接键：taxon_id + output_column；source_id_used；review_decision_ids_used</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>taxon_id（分类单元唯一编号）</th>
+      <th>output_column（标准性状编码列名）</th>
+      <th>value（最终分析值）</th>
+      <th>previous_value（上轮已有值）</th>
+      <th>value_origin（值来源类别）</th>
+      <th>value_origin_zh（值来源中文解释）</th>
+      <th>source_id_used（最终使用的来源编号）</th>
+      <th>candidate_ids_used（采用的候选编号）</th>
+      <th>review_decision_ids_used（采用的审阅决定编号）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sinanodonta_sp.</td>
+      <td>max_size_coarse__lt_10mm</td>
+      <td>0</td>
+      <td>0</td>
+      <td>previous_merge_run</td>
+      <td>上一轮合并矩阵已有值</td>
+      <td>dryad_qrfj6q5nh_v20240304</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Sinanodonta_sp.</td>
+      <td>max_size_coarse__ge_approx_10mm</td>
+      <td>1</td>
+      <td>1</td>
+      <td>previous_merge_run</td>
+      <td>上一轮合并矩阵已有值</td>
+      <td>dryad_qrfj6q5nh_v20240304</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Sinanodonta_sp.</td>
+      <td>shape_S1_streamlined</td>
+      <td>0</td>
+      <td></td>
+      <td>reviewed_trait_gap_completion</td>
+      <td>本轮审定缺值检索补值</td>
+      <td>korean_stream_macroinvertebrate_v1_2</td>
+      <td>CAND_SINANODONTA_SP_FULL_007</td>
+      <td>RGD-0058</td>
+    </tr>
+    <tr>
+      <td>Sinanodonta_sp.</td>
+      <td>shape_S2_non_streamlined</td>
+      <td>2</td>
+      <td></td>
+      <td>reviewed_trait_gap_completion</td>
+      <td>本轮审定缺值检索补值</td>
+      <td>korean_stream_macroinvertebrate_v1_2</td>
+      <td>CAND_SINANODONTA_SP_FULL_008</td>
+      <td>RGD-0059</td>
+    </tr>
+    <tr>
+      <td>Sinanodonta_sp.</td>
+      <td>armour_AR1_none</td>
+      <td>0</td>
+      <td></td>
+      <td>reviewed_trait_gap_completion</td>
+      <td>本轮审定缺值检索补值</td>
+      <td>korean_stream_macroinvertebrate_v1_2</td>
+      <td>CAND_SINANODONTA_SP_FULL_009</td>
+      <td>RGD-0060</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>taxon_id</td>
+      <td>分类单元唯一编号</td>
+    </tr>
+    <tr>
+      <td>output_column</td>
+      <td>标准性状编码列名</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td>最终分析值</td>
+    </tr>
+    <tr>
+      <td>previous_value</td>
+      <td>上轮已有值</td>
+    </tr>
+    <tr>
+      <td>value_origin</td>
+      <td>值来源类别</td>
+    </tr>
+    <tr>
+      <td>value_origin_zh</td>
+      <td>值来源中文解释</td>
+    </tr>
+    <tr>
+      <td>source_id_used</td>
+      <td>最终使用的来源编号</td>
+    </tr>
+    <tr>
+      <td>candidate_ids_used</td>
+      <td>采用的候选编号</td>
+    </tr>
+    <tr>
+      <td>review_decision_ids_used</td>
+      <td>采用的审阅决定编号</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-5"><h2>05 · 来源登记</h2><p><a href="../data/traits/sources.csv">data/traits/sources.csv</a> · 22 行 × 6 列</p><p>来源：整理已有来源登记与本轮来源表；移除本机缓存路径<br>主键／连接键：source_id</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>source_id（来源唯一编号）</th>
+      <th>source_name（来源名称）</th>
+      <th>citation（文献引文）</th>
+      <th>doi_or_url（DOI 或来源网页）</th>
+      <th>source_scope（来源区域范围）</th>
+      <th>rights_note_zh（材料归属与许可说明）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>alpine_streams_harmonized_traits</td>
+      <td>Harmonizing and Searching Macroinvertebrate Trait Information in Alpine Streams</td>
+      <td>Ao, S., Li, X., Tian, Z., Hu, J. &amp; Cai, Q. (2022). Harmonizing and Searching Macroinvertebrate Trait Information in Alpine Streams: Method and Application–A Case Study in the Three Parallel Rivers Region, China. Frontiers in Ecology and Evolution, 10, 945824. doi: 10.3389/fevo.2022.945824.</td>
+      <td>10.3389/fevo.2022.945824 | https://www.frontiersin.org/articles/10.3389/fevo.2022.945824/full</td>
+      <td>China, Three Parallel Rivers Region alpine streams</td>
+      <td>保留来源归属；未打包第三方原文或整库，未在本仓库代授第三方材料许可证</td>
+    </tr>
+    <tr>
+      <td>baek_2014_en14052</td>
+      <td>Baek et al. 2014, Environmental Entomology</td>
+      <td>Baek et al. 2014, Environmental Entomology</td>
+      <td>10.1603/EN14052</td>
+      <td></td>
+      <td>保留来源归属；未打包第三方原文或整库，未在本仓库代授第三方材料许可证</td>
+    </tr>
+    <tr>
+      <td>benthalia_genus_serra2016</td>
+      <td>Benthalia genus trait slice from Serra et al. 2016 supplementary database</td>
+      <td>Serra et al. (2016). Synthesising the trait information of European Chironomidae (Insecta: Diptera): Towards a new database. Ecological Indicators, 61, 282-292. doi: 10.1016/j.ecolind.2015.09.028.</td>
+      <td>10.1016/j.ecolind.2015.09.028 | https://www.sciencedirect.com/science/article/pii/S1470160X15005142</td>
+      <td>European freshwater Chironomidae database; local source slice only keeps Benthalia genus row</td>
+      <td>保留来源归属；未打包第三方原文或整库，未在本仓库代授第三方材料许可证</td>
+    </tr>
+    <tr>
+      <td>cuneopsis_heudei_targeted_traits</td>
+      <td>Targeted freshwater mussel traits package centered on Cuneopsis heudei</td>
+      <td>WU Ruiwen, GAO Boyu, LAN Zhichun, ZHANG Minghua, OUYANG Shan, WU Xiaoping. 2017. Predicting local colonization and extinction rates of freshwater mussels based on biological traits in a case of Lake Poyang. Journal of Lake Sciences, 29(3): 678-686. DOI: 10.18307/2017.0317. | WU Xiaoping, LIANG Yanling, WANG Hongzhu, OUYANG Shan. 1999. Morphological Characters of Glochidia of Unionidae and the Taxonomic Significance. Acta Hydrobiologica Sinica, 23(Suppl.): 139-147.</td>
+      <td>10.18307/2017.0317 | local_pdf:WuWang99bActaHydrobiolSin.pdf</td>
+      <td>China direct source: Lake Poyang freshwater mussels + Chinese Unionidae glochidial morphology literature</td>
+      <td>保留来源归属；未打包第三方原文或整库，未在本仓库代授第三方材料许可证</td>
+    </tr>
+    <tr>
+      <td>douda_2024_sinanodonta_review</td>
+      <td>Review of the globally invasive freshwater mussels in the genus Sinanodonta</td>
+      <td>Review of the globally invasive freshwater mussels in the genus Sinanodonta</td>
+      <td>10.1007/s10750-023-05457-3</td>
+      <td></td>
+      <td>保留来源归属；未打包第三方原文或整库，未在本仓库代授第三方材料许可证</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>source_id</td>
+      <td>来源唯一编号</td>
+    </tr>
+    <tr>
+      <td>source_name</td>
+      <td>来源名称</td>
+    </tr>
+    <tr>
+      <td>citation</td>
+      <td>文献引文</td>
+    </tr>
+    <tr>
+      <td>doi_or_url</td>
+      <td>DOI 或来源网页</td>
+    </tr>
+    <tr>
+      <td>source_scope</td>
+      <td>来源区域范围</td>
+    </tr>
+    <tr>
+      <td>rights_note_zh</td>
+      <td>材料归属与许可说明</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-6"><h2>06 · 外部检索证据摘要</h2><p><a href="../data/traits/evidence.csv">data/traits/evidence.csv</a> · 21 行 × 9 列</p><p>来源：自行检索整理的文献证据摘要；未附原文文件<br>主键／连接键：evidence_id；source_id</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>evidence_id（证据编号）</th>
+      <th>source_id（来源唯一编号）</th>
+      <th>citation_or_label（引文或来源标签）</th>
+      <th>doi_or_url（DOI 或来源网页）</th>
+      <th>accessed_at（记录的访问日期）</th>
+      <th>source_taxon_name（来源中的分类单元名称）</th>
+      <th>match_resolution（分类匹配层级）</th>
+      <th>authenticity_status（历史来源真实性标记）</th>
+      <th>evidence_detail_zh（证据摘要）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>EV_GALIZZI2012_ABLABESMYIA_FFG_001</td>
+      <td>galizzi_2012_chironomidae_diet</td>
+      <td>Diet and functional feeding groups of Chironomidae in the Middle Paraná River floodplain</td>
+      <td>10.1590/S0073-47212012000200001</td>
+      <td>2026-05-12</td>
+      <td>Ablabesmyia (Karelia) sp.</td>
+      <td>GO</td>
+      <td>clear</td>
+      <td>摘要说明 Ablabesmyia (Karelia) sp. 幼虫肠道中动物组织为主要食物，作者将其作为捕食性类群讨论。</td>
+    </tr>
+    <tr>
+      <td>EV_WONGLERSAK2021_ABLABESMYIA_MONILIS_LIFE_001</td>
+      <td>wonglersak_2021_chironomid_body_size_life_history</td>
+      <td>Insect body size changes under future warming projections: a case study of Chironomidae</td>
+      <td>10.1007/s10750-021-04597-8</td>
+      <td>2026-05-12</td>
+      <td>Ablabesmyia monilis</td>
+      <td>SG</td>
+      <td>clear</td>
+      <td>论文讨论中报告 A. monilis 的样本随羽化日期分布显示一年一代生活史，可与 Procladius 的一年两代证据形成零距离 pair 的年世代数差异。</td>
+    </tr>
+    <tr>
+      <td>EV_MICROSHELLS_ACUTICOSTA_SHELL_SHAPE_001</td>
+      <td>microshells_acuticosta_squammosus_20260512</td>
+      <td>Microshells Acuticosta chinensis squammosus page</td>
+      <td>https://bishogai.com/pic_book/data68/r006744.html</td>
+      <td>2026-05-12</td>
+      <td>Acuticosta chinensis squammosus</td>
+      <td>OS</td>
+      <td>clear</td>
+      <td>网页描述样本来自江西鄱阳湖砂底，作为中国尖嵴蚌的一型，壳中央附近和后端附近角张；审阅后只作为 OS 上卷自亚型/亚种的非流线型中等支持线索，后续报告必须标注来源特殊性。</td>
+    </tr>
+    <tr>
+      <td>EV_FU2022_DICROTENDIPES_SP_001</td>
+      <td>fu_2022_fevo922539</td>
+      <td>Fu et al. 2022, Supplementary Table 2</td>
+      <td>10.3389/fevo.2022.922539</td>
+      <td>2026-05-12</td>
+      <td>Dicrotendipes nervosus</td>
+      <td>SG</td>
+      <td>clear</td>
+      <td>补充表 Table 2 对来源分类单元 Dicrotendipes nervosus 给出二元功能性状编码；匹配分辨率为 SG 同属种。</td>
+    </tr>
+    <tr>
+      <td>EV_EPA_TRAITS_DICROTENDIPES_VOLT_001</td>
+      <td>epa_me_nc_traitstable_20100927</td>
+      <td>Freshwater Biological Traits Database / EPA ME and NC trait tables</td>
+      <td>https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=P100LNWR.TXT</td>
+      <td>2026-05-12</td>
+      <td>Dicrotendipes</td>
+      <td>EG</td>
+      <td>clear</td>
+      <td>EPA ME/NC trait 表的属级 Dicrotendipes 记录给 Voltinism=bi_multi；元数据定义为 bi- or multivoltine (&gt;1 generation/yr)。</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>evidence_id</td>
+      <td>证据编号</td>
+    </tr>
+    <tr>
+      <td>source_id</td>
+      <td>来源唯一编号</td>
+    </tr>
+    <tr>
+      <td>citation_or_label</td>
+      <td>引文或来源标签</td>
+    </tr>
+    <tr>
+      <td>doi_or_url</td>
+      <td>DOI 或来源网页</td>
+    </tr>
+    <tr>
+      <td>accessed_at</td>
+      <td>记录的访问日期</td>
+    </tr>
+    <tr>
+      <td>source_taxon_name</td>
+      <td>来源中的分类单元名称</td>
+    </tr>
+    <tr>
+      <td>match_resolution</td>
+      <td>分类匹配层级</td>
+    </tr>
+    <tr>
+      <td>authenticity_status</td>
+      <td>历史来源真实性标记</td>
+    </tr>
+    <tr>
+      <td>evidence_detail_zh</td>
+      <td>证据摘要</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-7"><h2>07 · 候选审阅决定</h2><p><a href="../data/traits/review_decisions.csv">data/traits/review_decisions.csv</a> · 137 行 × 12 列</p><p>来源：合并 2026-05-05 的 62 条与 2026-05-15 的 74 条审阅；早期批次未记录的候选及证据编号留空；同属种后期例外也保留<br>主键／连接键：review_decision_id；review_batch；candidate_id；taxon_id + output_column；evidence_id</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>review_decision_id（审阅决定唯一编号）</th>
+      <th>candidate_id（候选值编号）</th>
+      <th>taxon_id（分类单元唯一编号）</th>
+      <th>output_column（标准性状编码列名）</th>
+      <th>standard_value（候选标准值）</th>
+      <th>source_id（来源唯一编号）</th>
+      <th>evidence_id（证据编号）</th>
+      <th>match_resolution_code（分类匹配层级代码）</th>
+      <th>final_review_decision（最终审阅决定）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>FRD-0001</td>
+      <td></td>
+      <td>Benthalia_sp.</td>
+      <td>aquatic_stage__egg_larva_aquatic</td>
+      <td>3</td>
+      <td>benthalia_genus_serra2016</td>
+      <td></td>
+      <td>GO</td>
+      <td>accepted_after_user_review</td>
+    </tr>
+    <tr>
+      <td>FRD-0002</td>
+      <td></td>
+      <td>Benthalia_sp.</td>
+      <td>aquatic_stage__fully_aquatic</td>
+      <td>0</td>
+      <td>benthalia_genus_serra2016</td>
+      <td></td>
+      <td>GO</td>
+      <td>accepted_after_user_review</td>
+    </tr>
+    <tr>
+      <td>FRD-0003</td>
+      <td></td>
+      <td>Benthalia_sp.</td>
+      <td>feeding_group__scraper_grazer</td>
+      <td>1</td>
+      <td>benthalia_genus_serra2016</td>
+      <td></td>
+      <td>GO</td>
+      <td>accepted_after_user_review</td>
+    </tr>
+    <tr>
+      <td>FRD-0004</td>
+      <td></td>
+      <td>Benthalia_sp.</td>
+      <td>feeding_group__shredder</td>
+      <td>1</td>
+      <td>benthalia_genus_serra2016</td>
+      <td></td>
+      <td>GO</td>
+      <td>accepted_after_user_review</td>
+    </tr>
+    <tr>
+      <td>FRD-0005</td>
+      <td></td>
+      <td>Benthalia_sp.</td>
+      <td>max_size_coarse__ge_approx_10mm</td>
+      <td>1</td>
+      <td>benthalia_genus_serra2016</td>
+      <td></td>
+      <td>GO</td>
+      <td>accepted_after_user_review</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>review_decision_id</td>
+      <td>审阅决定唯一编号</td>
+    </tr>
+    <tr>
+      <td>candidate_id</td>
+      <td>候选值编号</td>
+    </tr>
+    <tr>
+      <td>taxon_id</td>
+      <td>分类单元唯一编号</td>
+    </tr>
+    <tr>
+      <td>output_column</td>
+      <td>标准性状编码列名</td>
+    </tr>
+    <tr>
+      <td>standard_value</td>
+      <td>候选标准值</td>
+    </tr>
+    <tr>
+      <td>source_id</td>
+      <td>来源唯一编号</td>
+    </tr>
+    <tr>
+      <td>evidence_id</td>
+      <td>证据编号</td>
+    </tr>
+    <tr>
+      <td>match_resolution_code</td>
+      <td>分类匹配层级代码</td>
+    </tr>
+    <tr>
+      <td>final_review_decision</td>
+      <td>最终审阅决定</td>
+    </tr>
+    <tr>
+      <td>merge_eligibility_before_conflict_check</td>
+      <td>冲突检查前的入库资格</td>
+    </tr>
+    <tr>
+      <td>decision_basis_zh</td>
+      <td>审阅依据</td>
+    </tr>
+    <tr>
+      <td>review_batch</td>
+      <td>审阅批次日期，区分两轮证据处理</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-8"><h2>08 · 未合入的冲突单元格</h2><p><a href="../data/traits/conflicts.csv">data/traits/conflicts.csv</a> · 6 行 × 10 列</p><p>来源：已接受候选彼此矛盾时继续保持缺失；不为提高覆盖率强行决定<br>主键／连接键：merge_cell_id；taxon_id + output_column；review_decision_ids</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>merge_cell_id（合并单元格编号）</th>
+      <th>taxon_id（分类单元唯一编号）</th>
+      <th>output_column（标准性状编码列名）</th>
+      <th>old_value（原单元格值）</th>
+      <th>cell_resolution_status_zh（冲突处理状态）</th>
+      <th>accepted_values（已接受但彼此矛盾的值）</th>
+      <th>candidate_ids（候选编号集合）</th>
+      <th>review_decision_ids（审阅决定编号集合）</th>
+      <th>source_ids（来源编号集合）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>MCELL-0038</td>
+      <td>Procladius_sp.</td>
+      <td>voltinism__multivoltine_gt_1_generation_per_year</td>
+      <td></td>
+      <td>不合并：同一单元格存在多个已审定但不一致的候选值，需要下一轮明确选择。</td>
+      <td>0 | 3</td>
+      <td>CAND_PROCLADIUS_SP_P0_005; CAND_PROCLADIUS_SP_FULL_011</td>
+      <td>RGD-0043; RGD-0049</td>
+      <td>fu_2022_fevo922539; specziar_2008_procladius_life_history</td>
+    </tr>
+    <tr>
+      <td>MCELL-0040</td>
+      <td>Procladius_sp.</td>
+      <td>voltinism__univoltine_1_generation_per_year</td>
+      <td></td>
+      <td>不合并：同一单元格存在多个已审定但不一致的候选值，需要下一轮明确选择。</td>
+      <td>0 | 3</td>
+      <td>CAND_PROCLADIUS_SP_P0_004; CAND_PROCLADIUS_SP_FULL_010</td>
+      <td>RGD-0042; RGD-0048</td>
+      <td>fu_2022_fevo922539; specziar_2008_procladius_life_history</td>
+    </tr>
+    <tr>
+      <td>MCELL-0041</td>
+      <td>Sinanodonta_sp.</td>
+      <td>aquatic_stage__egg_larva_aquatic</td>
+      <td></td>
+      <td>不合并：同一单元格存在多个已审定但不一致的候选值，需要下一轮明确选择。</td>
+      <td>1 | 3</td>
+      <td>CAND_SINANODONTA_SP_FULL_013; CAND_SINANODONTA_SP_FULL_022</td>
+      <td>RGD-0064; RGD-0073</td>
+      <td>korean_stream_macroinvertebrate_v1_2; douda_2024_sinanodonta_review</td>
+    </tr>
+    <tr>
+      <td>MCELL-0042</td>
+      <td>Sinanodonta_sp.</td>
+      <td>aquatic_stage__fully_aquatic</td>
+      <td></td>
+      <td>不合并：同一单元格存在多个已审定但不一致的候选值，需要下一轮明确选择。</td>
+      <td>1 | 3</td>
+      <td>CAND_SINANODONTA_SP_FULL_014; CAND_SINANODONTA_SP_FULL_023</td>
+      <td>RGD-0065; RGD-0074</td>
+      <td>korean_stream_macroinvertebrate_v1_2; douda_2024_sinanodonta_review</td>
+    </tr>
+    <tr>
+      <td>MCELL-0051</td>
+      <td>Sinanodonta_sp.</td>
+      <td>voltinism__multivoltine_gt_1_generation_per_year</td>
+      <td></td>
+      <td>不合并：同一单元格存在多个已审定但不一致的候选值，需要下一轮明确选择。</td>
+      <td>0 | 2</td>
+      <td>CAND_SINANODONTA_SP_P0_005; CAND_SINANODONTA_SP_FULL_019</td>
+      <td>RGD-0056; RGD-0070</td>
+      <td>fu_2022_fevo922539; korean_stream_macroinvertebrate_v1_2</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>merge_cell_id</td>
+      <td>合并单元格编号</td>
+    </tr>
+    <tr>
+      <td>taxon_id</td>
+      <td>分类单元唯一编号</td>
+    </tr>
+    <tr>
+      <td>output_column</td>
+      <td>标准性状编码列名</td>
+    </tr>
+    <tr>
+      <td>old_value</td>
+      <td>原单元格值</td>
+    </tr>
+    <tr>
+      <td>cell_resolution_status_zh</td>
+      <td>冲突处理状态</td>
+    </tr>
+    <tr>
+      <td>accepted_values</td>
+      <td>已接受但彼此矛盾的值</td>
+    </tr>
+    <tr>
+      <td>candidate_ids</td>
+      <td>候选编号集合</td>
+    </tr>
+    <tr>
+      <td>review_decision_ids</td>
+      <td>审阅决定编号集合</td>
+    </tr>
+    <tr>
+      <td>source_ids</td>
+      <td>来源编号集合</td>
+    </tr>
+    <tr>
+      <td>evidence_ids</td>
+      <td>证据编号集合</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-9"><h2>09 · 历史真实结果：分季节汇总</h2><p><a href="../data/historical/beta_summary.csv">data/historical/beta_summary.csv</a> · 18 行 × 15 列</p><p>来源：05df483 中的图源；公开校正功能有无总量与组分的系数对应；没有样点对明细<br>主键／连接键：bar_id</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>bar_id（汇总条唯一编号）</th>
+      <th>data_type（群落数据类型）</th>
+      <th>data_type_zh（数据类型中文名）</th>
+      <th>season_zh（季节中文名）</th>
+      <th>dimension（多样性维度代码）</th>
+      <th>dimension_zh（维度中文名）</th>
+      <th>framework（距离与分解框架）</th>
+      <th>component_a（第一组分的准确名称）</th>
+      <th>component_b（第二组分的准确名称）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>incidence__Au__TD__Baselga-Sørensen</td>
+      <td>incidence</td>
+      <td>出现/缺失</td>
+      <td>秋季</td>
+      <td>TD</td>
+      <td>分类学 TD</td>
+      <td>Baselga-Sørensen</td>
+      <td>turnover</td>
+      <td>nestedness</td>
+    </tr>
+    <tr>
+      <td>incidence__Au__FD__Podani/Cardoso-Jaccard</td>
+      <td>incidence</td>
+      <td>出现/缺失</td>
+      <td>秋季</td>
+      <td>FD</td>
+      <td>功能 FD</td>
+      <td>Podani/Cardoso-Jaccard</td>
+      <td>replacement</td>
+      <td>richness_difference</td>
+    </tr>
+    <tr>
+      <td>incidence__Au__PD__Baselga-Sørensen</td>
+      <td>incidence</td>
+      <td>出现/缺失</td>
+      <td>秋季</td>
+      <td>PD</td>
+      <td>系统发育代理 PD</td>
+      <td>Baselga-Sørensen</td>
+      <td>turnover</td>
+      <td>nestedness</td>
+    </tr>
+    <tr>
+      <td>density__Au__TD__Bray-Curtis balanced-gradient</td>
+      <td>density</td>
+      <td>密度</td>
+      <td>秋季</td>
+      <td>TD</td>
+      <td>分类学 TD</td>
+      <td>Bray-Curtis balanced-gradient</td>
+      <td>balanced</td>
+      <td>gradient</td>
+    </tr>
+    <tr>
+      <td>density__Au__FD__abundance-weighted tree replacement-richness</td>
+      <td>density</td>
+      <td>密度</td>
+      <td>秋季</td>
+      <td>FD</td>
+      <td>功能 FD</td>
+      <td>abundance-weighted tree replacement-richness</td>
+      <td>replacement</td>
+      <td>richness_difference</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bar_id</td>
+      <td>汇总条唯一编号</td>
+    </tr>
+    <tr>
+      <td>data_type</td>
+      <td>群落数据类型</td>
+    </tr>
+    <tr>
+      <td>data_type_zh</td>
+      <td>数据类型中文名</td>
+    </tr>
+    <tr>
+      <td>season_zh</td>
+      <td>季节中文名</td>
+    </tr>
+    <tr>
+      <td>dimension</td>
+      <td>多样性维度代码</td>
+    </tr>
+    <tr>
+      <td>dimension_zh</td>
+      <td>维度中文名</td>
+    </tr>
+    <tr>
+      <td>framework</td>
+      <td>距离与分解框架</td>
+    </tr>
+    <tr>
+      <td>component_a</td>
+      <td>第一组分的准确名称</td>
+    </tr>
+    <tr>
+      <td>component_b</td>
+      <td>第二组分的准确名称</td>
+    </tr>
+    <tr>
+      <td>n_pairs</td>
+      <td>汇总中的样点对数量</td>
+    </tr>
+    <tr>
+      <td>mean_total</td>
+      <td>总差异均值</td>
+    </tr>
+    <tr>
+      <td>mean_component_a</td>
+      <td>第一组分均值</td>
+    </tr>
+    <tr>
+      <td>mean_component_b</td>
+      <td>第二组分均值</td>
+    </tr>
+    <tr>
+      <td>share_component_a</td>
+      <td>第一组分在两组分和中的比例</td>
+    </tr>
+    <tr>
+      <td>share_component_b</td>
+      <td>第二组分比例</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-10"><h2>10 · 历史真实结果：季节检验关键行</h2><p><a href="../data/historical/season_tests.csv">data/historical/season_tests.csv</a> · 2 行 × 6 列</p><p>来源：来自 05df483 保存的早期报告配套汇总表；无原始样本数值<br>主键／连接键：matrix_label_zh</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>effect_scope_zh（检验范围与置换设计）</th>
+      <th>matrix_label_zh（响应矩阵中文名称）</th>
+      <th>pseudo_F（置换多元方差分析伪 F）</th>
+      <th>R2（解释率）</th>
+      <th>PERMANOVA_FDR（历史季节检验的校正 p）</th>
+      <th>PERMDISP_FDR（历史离散度检验的校正 p）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>全 24 样本配对季节效应（D ~ season_code，置换限制在 site_id 内）</td>
+      <td>密度-功能-替换组分</td>
+      <td>14.523</td>
+      <td>0.398</td>
+      <td>0.049</td>
+      <td>0.55</td>
+    </tr>
+    <tr>
+      <td>全 24 样本配对季节效应（D ~ season_code，置换限制在 site_id 内）</td>
+      <td>密度-功能-总 β 多样性</td>
+      <td>4.943</td>
+      <td>0.183</td>
+      <td>0.049</td>
+      <td>0.55</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>effect_scope_zh</td>
+      <td>检验范围与置换设计</td>
+    </tr>
+    <tr>
+      <td>matrix_label_zh</td>
+      <td>响应矩阵中文名称</td>
+    </tr>
+    <tr>
+      <td>pseudo_F</td>
+      <td>置换多元方差分析伪 F</td>
+    </tr>
+    <tr>
+      <td>R2</td>
+      <td>解释率</td>
+    </tr>
+    <tr>
+      <td>PERMANOVA_FDR</td>
+      <td>历史季节检验的校正 p</td>
+    </tr>
+    <tr>
+      <td>PERMDISP_FDR</td>
+      <td>历史离散度检验的校正 p</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-11"><h2>11 · 历史真实结果：入模变量</h2><p><a href="../data/historical/selected_variables.csv">data/historical/selected_variables.csv</a> · 2 行 × 5 列</p><p>来源：来自 05df483 保存的早期报告配套汇总表；无原始样本数值<br>主键／连接键：季节字段</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>season_zh（季节中文名）</th>
+      <th>selected_environment_variables（筛选后环境变量）</th>
+      <th>selected_space_variables（空间变量）</th>
+      <th>n_environment_variables（环境变量数）</th>
+      <th>n_space_variables（空间变量数）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>秋季</td>
+      <td>总氮 (TN)；氨氮 (NH3-N)；溶解氧 (DO)</td>
+      <td>空间主轴 1 (space_PC1)；空间主轴 2 (space_PC2)</td>
+      <td>3</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>夏季</td>
+      <td>总氮 (TN)；氨氮 (NH3-N)；总磷 (TP)</td>
+      <td>空间主轴 1 (space_PC1)；空间主轴 2 (space_PC2)</td>
+      <td>3</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>season_zh</td>
+      <td>季节中文名</td>
+    </tr>
+    <tr>
+      <td>selected_environment_variables</td>
+      <td>筛选后环境变量</td>
+    </tr>
+    <tr>
+      <td>selected_space_variables</td>
+      <td>空间变量</td>
+    </tr>
+    <tr>
+      <td>n_environment_variables</td>
+      <td>环境变量数</td>
+    </tr>
+    <tr>
+      <td>n_space_variables</td>
+      <td>空间变量数</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-12"><h2>12 · 历史真实结果：驱动模型汇总</h2><p><a href="../data/historical/driver_models.csv">data/historical/driver_models.csv</a> · 36 行 × 8 列</p><p>来源：来自 05df483 保存的早期报告配套汇总表；无原始样本数值<br>主键／连接键：season_zh + response_matrix_zh + model_scope_zh</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>season_zh（季节中文名）</th>
+      <th>vpa_panel（历史 VPA 图面板编号）</th>
+      <th>response_matrix_zh（响应距离矩阵）</th>
+      <th>model_scope_zh（模型变量组合）</th>
+      <th>predictors_zh（模型解释变量）</th>
+      <th>R2（解释率）</th>
+      <th>adjusted_R2（调整后的解释率）</th>
+      <th>permutation_p（置换检验 p 值）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>秋季</td>
+      <td>A</td>
+      <td>出现/缺失口径分类学总 β 多样性</td>
+      <td>环境变量模型</td>
+      <td>氨氮 (NH3-N)；总氮 (TN)；溶解氧 (DO)</td>
+      <td>0.420</td>
+      <td>0.202</td>
+      <td>0.036</td>
+    </tr>
+    <tr>
+      <td>秋季</td>
+      <td>A</td>
+      <td>出现/缺失口径分类学总 β 多样性</td>
+      <td>空间变量模型</td>
+      <td>空间主轴 1 (space_PC1)；空间主轴 2 (space_PC2)</td>
+      <td>0.195</td>
+      <td>0.016</td>
+      <td>0.370</td>
+    </tr>
+    <tr>
+      <td>秋季</td>
+      <td>A</td>
+      <td>出现/缺失口径分类学总 β 多样性</td>
+      <td>环境+空间联合模型</td>
+      <td>氨氮 (NH3-N)；总氮 (TN)；溶解氧 (DO)；空间主轴 1 (space_PC1)；空间主轴 2 (space_PC2)</td>
+      <td>0.623</td>
+      <td>0.308</td>
+      <td>0.014</td>
+    </tr>
+    <tr>
+      <td>秋季</td>
+      <td>C</td>
+      <td>出现/缺失口径分类学周转组分</td>
+      <td>环境变量模型</td>
+      <td>氨氮 (NH3-N)；总氮 (TN)；溶解氧 (DO)</td>
+      <td>0.461</td>
+      <td>0.259</td>
+      <td>0.038</td>
+    </tr>
+    <tr>
+      <td>秋季</td>
+      <td>C</td>
+      <td>出现/缺失口径分类学周转组分</td>
+      <td>空间变量模型</td>
+      <td>空间主轴 1 (space_PC1)；空间主轴 2 (space_PC2)</td>
+      <td>0.190</td>
+      <td>0.010</td>
+      <td>0.390</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>season_zh</td>
+      <td>季节中文名</td>
+    </tr>
+    <tr>
+      <td>vpa_panel</td>
+      <td>历史 VPA 图面板编号</td>
+    </tr>
+    <tr>
+      <td>response_matrix_zh</td>
+      <td>响应距离矩阵</td>
+    </tr>
+    <tr>
+      <td>model_scope_zh</td>
+      <td>模型变量组合</td>
+    </tr>
+    <tr>
+      <td>predictors_zh</td>
+      <td>模型解释变量</td>
+    </tr>
+    <tr>
+      <td>R2</td>
+      <td>解释率</td>
+    </tr>
+    <tr>
+      <td>adjusted_R2</td>
+      <td>调整后的解释率</td>
+    </tr>
+    <tr>
+      <td>permutation_p</td>
+      <td>置换检验 p 值</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-13"><h2>13 · 合成演示：分类映射</h2><p><a href="../data/synthetic/mapping.csv">data/synthetic/mapping.csv</a> · 47 行 × 5 列</p><p>来源：从零构造 47 条记录与目标单元的关系，不是原始名录映射<br>主键／连接键：record_id；taxon_id</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>record_id（虚构原始记录编号）</th>
+      <th>synthetic_name（虚构记录名称）</th>
+      <th>taxon_id（分类单元唯一编号）</th>
+      <th>action（演示处理动作）</th>
+      <th>reason_zh（处理理由）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DEMO_R001</td>
+      <td>虚构原始条目001</td>
+      <td>Sinanodonta_sp.</td>
+      <td>retain</td>
+      <td>演示合并规则；不是历史真实异名映射</td>
+    </tr>
+    <tr>
+      <td>DEMO_R002</td>
+      <td>虚构原始条目002</td>
+      <td>Pseudovivipara_sp.</td>
+      <td>retain</td>
+      <td>演示合并规则；不是历史真实异名映射</td>
+    </tr>
+    <tr>
+      <td>DEMO_R003</td>
+      <td>虚构原始条目003</td>
+      <td>Glyptotendipes_sp.</td>
+      <td>retain</td>
+      <td>演示合并规则；不是历史真实异名映射</td>
+    </tr>
+    <tr>
+      <td>DEMO_R004</td>
+      <td>虚构原始条目004</td>
+      <td>Lamprotula_sp.</td>
+      <td>retain</td>
+      <td>演示合并规则；不是历史真实异名映射</td>
+    </tr>
+    <tr>
+      <td>DEMO_R005</td>
+      <td>虚构原始条目005</td>
+      <td>Rivularia_sp.</td>
+      <td>retain</td>
+      <td>演示合并规则；不是历史真实异名映射</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>record_id</td>
+      <td>虚构原始记录编号</td>
+    </tr>
+    <tr>
+      <td>synthetic_name</td>
+      <td>虚构记录名称</td>
+    </tr>
+    <tr>
+      <td>taxon_id</td>
+      <td>分类单元唯一编号</td>
+    </tr>
+    <tr>
+      <td>action</td>
+      <td>演示处理动作</td>
+    </tr>
+    <tr>
+      <td>reason_zh</td>
+      <td>处理理由</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-14"><h2>14 · 合成演示：原始观测</h2><p><a href="../data/synthetic/observations.csv">data/synthetic/observations.csv</a> · 1128 行 × 4 列</p><p>来源：独立随机种子；未拟合真实群落<br>主键／连接键：sample_id + record_id</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>sample_id（虚构样本编号）</th>
+      <th>record_id（虚构原始记录编号）</th>
+      <th>density（合成密度值（示例单位为个体每平方米））</th>
+      <th>biomass（合成生物量值（示例单位为克每平方米））</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DEMO_summer_01</td>
+      <td>DEMO_R001</td>
+      <td>3</td>
+      <td>11.4295</td>
+    </tr>
+    <tr>
+      <td>DEMO_summer_01</td>
+      <td>DEMO_R002</td>
+      <td>1</td>
+      <td>3.7126</td>
+    </tr>
+    <tr>
+      <td>DEMO_summer_01</td>
+      <td>DEMO_R003</td>
+      <td>0</td>
+      <td>0.0000</td>
+    </tr>
+    <tr>
+      <td>DEMO_summer_01</td>
+      <td>DEMO_R004</td>
+      <td>0</td>
+      <td>0.0000</td>
+    </tr>
+    <tr>
+      <td>DEMO_summer_01</td>
+      <td>DEMO_R005</td>
+      <td>0</td>
+      <td>0.0000</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>sample_id</td>
+      <td>虚构样本编号</td>
+    </tr>
+    <tr>
+      <td>record_id</td>
+      <td>虚构原始记录编号</td>
+    </tr>
+    <tr>
+      <td>density</td>
+      <td>合成密度值（示例单位为个体每平方米）</td>
+    </tr>
+    <tr>
+      <td>biomass</td>
+      <td>合成生物量值（示例单位为克每平方米）</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-15"><h2>15 · 合成演示：配对信息</h2><p><a href="../data/synthetic/metadata.csv">data/synthetic/metadata.csv</a> · 24 行 × 4 列</p><p>来源：24 个虚构样本；每个固定点对应两季<br>主键／连接键：sample_id；site_id</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>sample_id（虚构样本编号）</th>
+      <th>site_id（虚构固定点编号）</th>
+      <th>season（季节代码）</th>
+      <th>data_origin（数据来源类别）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DEMO_summer_01</td>
+      <td>DEMO_SITE_01</td>
+      <td>summer</td>
+      <td>synthetic_only</td>
+    </tr>
+    <tr>
+      <td>DEMO_summer_02</td>
+      <td>DEMO_SITE_02</td>
+      <td>summer</td>
+      <td>synthetic_only</td>
+    </tr>
+    <tr>
+      <td>DEMO_summer_03</td>
+      <td>DEMO_SITE_03</td>
+      <td>summer</td>
+      <td>synthetic_only</td>
+    </tr>
+    <tr>
+      <td>DEMO_summer_04</td>
+      <td>DEMO_SITE_04</td>
+      <td>summer</td>
+      <td>synthetic_only</td>
+    </tr>
+    <tr>
+      <td>DEMO_summer_05</td>
+      <td>DEMO_SITE_05</td>
+      <td>summer</td>
+      <td>synthetic_only</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>sample_id</td>
+      <td>虚构样本编号</td>
+    </tr>
+    <tr>
+      <td>site_id</td>
+      <td>虚构固定点编号</td>
+    </tr>
+    <tr>
+      <td>season</td>
+      <td>季节代码</td>
+    </tr>
+    <tr>
+      <td>data_origin</td>
+      <td>数据来源类别</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-16"><h2>16 · 合成输出：规则合并后的群落</h2><p><a href="../outputs/demo/community_long.csv">outputs/demo/community_long.csv</a> · 888 行 × 5 列</p><p>来源：合成观测经映射，数量求和；有无重新二值化<br>主键／连接键：sample_id + taxon_id</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>sample_id（虚构样本编号）</th>
+      <th>taxon_id（分类单元唯一编号）</th>
+      <th>density（合成密度值（示例单位为个体每平方米））</th>
+      <th>biomass（合成生物量值（示例单位为克每平方米））</th>
+      <th>incidence（有无值，出现为 1，否则为 0）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DEMO_summer_01</td>
+      <td>Sinanodonta_sp.</td>
+      <td>3</td>
+      <td>11.4295</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>DEMO_summer_01</td>
+      <td>Pseudovivipara_sp.</td>
+      <td>1</td>
+      <td>3.7126</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>DEMO_summer_01</td>
+      <td>Glyptotendipes_sp.</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>DEMO_summer_01</td>
+      <td>Lamprotula_sp.</td>
+      <td>8</td>
+      <td>23.7572</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>DEMO_summer_01</td>
+      <td>Rivularia_sp.</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>sample_id</td>
+      <td>虚构样本编号</td>
+    </tr>
+    <tr>
+      <td>taxon_id</td>
+      <td>分类单元唯一编号</td>
+    </tr>
+    <tr>
+      <td>density</td>
+      <td>合成密度值（示例单位为个体每平方米）</td>
+    </tr>
+    <tr>
+      <td>biomass</td>
+      <td>合成生物量值（示例单位为克每平方米）</td>
+    </tr>
+    <tr>
+      <td>incidence</td>
+      <td>有无值，出现为 1，否则为 0</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-17"><h2>17 · 合成输出：分季节 β 汇总</h2><p><a href="../outputs/demo/beta_summary.csv">outputs/demo/beta_summary.csv</a> · 18 行 × 11 列</p><p>来源：公开演示按三类数据、三个维度计算；不用于支持论文结论<br>主键／连接键：data_type + dimension + season</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>data_type（群落数据类型）</th>
+      <th>dimension（多样性维度代码）</th>
+      <th>season（季节代码）</th>
+      <th>coefficient（距离系数，数量型名称见下方术语表）</th>
+      <th>partition（分解框架）</th>
+      <th>component_a（第一组分的准确名称）</th>
+      <th>component_b（第二组分的准确名称）</th>
+      <th>n_pairs（汇总中的样点对数量）</th>
+      <th>mean_total（总差异均值）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>incidence</td>
+      <td>TD</td>
+      <td>summer</td>
+      <td>sorensen</td>
+      <td>baselga</td>
+      <td>turnover</td>
+      <td>nestedness_resultant</td>
+      <td>66</td>
+      <td>0.594476</td>
+    </tr>
+    <tr>
+      <td>incidence</td>
+      <td>TD</td>
+      <td>autumn</td>
+      <td>sorensen</td>
+      <td>baselga</td>
+      <td>turnover</td>
+      <td>nestedness_resultant</td>
+      <td>66</td>
+      <td>0.609429</td>
+    </tr>
+    <tr>
+      <td>incidence</td>
+      <td>FD</td>
+      <td>summer</td>
+      <td>jaccard</td>
+      <td>podani</td>
+      <td>replacement</td>
+      <td>richness_difference</td>
+      <td>66</td>
+      <td>0.505879</td>
+    </tr>
+    <tr>
+      <td>incidence</td>
+      <td>FD</td>
+      <td>autumn</td>
+      <td>jaccard</td>
+      <td>podani</td>
+      <td>replacement</td>
+      <td>richness_difference</td>
+      <td>66</td>
+      <td>0.511259</td>
+    </tr>
+    <tr>
+      <td>incidence</td>
+      <td>PD_proxy</td>
+      <td>summer</td>
+      <td>sorensen</td>
+      <td>baselga</td>
+      <td>turnover</td>
+      <td>nestedness_resultant</td>
+      <td>66</td>
+      <td>0.398977</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>data_type</td>
+      <td>群落数据类型</td>
+    </tr>
+    <tr>
+      <td>dimension</td>
+      <td>多样性维度代码</td>
+    </tr>
+    <tr>
+      <td>season</td>
+      <td>季节代码</td>
+    </tr>
+    <tr>
+      <td>coefficient</td>
+      <td>距离系数，数量型名称见下方术语表</td>
+    </tr>
+    <tr>
+      <td>partition</td>
+      <td>分解框架</td>
+    </tr>
+    <tr>
+      <td>component_a</td>
+      <td>第一组分的准确名称</td>
+    </tr>
+    <tr>
+      <td>component_b</td>
+      <td>第二组分的准确名称</td>
+    </tr>
+    <tr>
+      <td>n_pairs</td>
+      <td>汇总中的样点对数量</td>
+    </tr>
+    <tr>
+      <td>mean_total</td>
+      <td>总差异均值</td>
+    </tr>
+    <tr>
+      <td>mean_component_a</td>
+      <td>第一组分均值</td>
+    </tr>
+    <tr>
+      <td>mean_component_b</td>
+      <td>第二组分均值</td>
+    </tr>
+  </tbody>
+</table></details></section><section id="table-18"><h2>18 · 合成输出：配对季节检验</h2><p><a href="../outputs/demo/season_tests.csv">outputs/demo/season_tests.csv</a> · 9 行 × 12 列</p><p>来源：九个总距离矩阵；Lingoes 校正后，固定点内精确枚举 4096 次<br>主键／连接键：data_type + dimension</p><div class="table"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>data_type（群落数据类型）</th>
+      <th>dimension（多样性维度代码）</th>
+      <th>coefficient（距离系数，数量型名称见下方术语表）</th>
+      <th>partition（分解框架）</th>
+      <th>R2（解释率）</th>
+      <th>pseudo_F（置换多元方差分析伪 F）</th>
+      <th>p_permanova（演示季节检验原始 p）</th>
+      <th>p_permdisp（演示离散度检验原始 p）</th>
+      <th>n_permutations（实际枚举的标签排列数）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>incidence</td>
+      <td>TD</td>
+      <td>sorensen</td>
+      <td>baselga</td>
+      <td>0.049935</td>
+      <td>1.156312</td>
+      <td>0.298828</td>
+      <td>0.264648</td>
+      <td>4096</td>
+    </tr>
+    <tr>
+      <td>incidence</td>
+      <td>FD</td>
+      <td>jaccard</td>
+      <td>podani</td>
+      <td>0.034572</td>
+      <td>0.787830</td>
+      <td>0.661133</td>
+      <td>0.889160</td>
+      <td>4096</td>
+    </tr>
+    <tr>
+      <td>incidence</td>
+      <td>PD_proxy</td>
+      <td>sorensen</td>
+      <td>baselga</td>
+      <td>0.047916</td>
+      <td>1.107193</td>
+      <td>0.308105</td>
+      <td>0.945312</td>
+      <td>4096</td>
+    </tr>
+    <tr>
+      <td>density</td>
+      <td>TD</td>
+      <td>sorensen</td>
+      <td>podani</td>
+      <td>0.050139</td>
+      <td>1.161274</td>
+      <td>0.305664</td>
+      <td>0.901367</td>
+      <td>4096</td>
+    </tr>
+    <tr>
+      <td>density</td>
+      <td>FD</td>
+      <td>sorensen</td>
+      <td>podani</td>
+      <td>0.028443</td>
+      <td>0.644060</td>
+      <td>0.878906</td>
+      <td>0.783691</td>
+      <td>4096</td>
+    </tr>
+  </tbody>
+</table></div><p>预览至多 5–6 行、9 列，完整数据在 CSV 和同名顺序工作表中。</p><details><summary>查看全部英文列名与中文解释</summary><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>英文列名</th>
+      <th>中文解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>data_type</td>
+      <td>群落数据类型</td>
+    </tr>
+    <tr>
+      <td>dimension</td>
+      <td>多样性维度代码</td>
+    </tr>
+    <tr>
+      <td>coefficient</td>
+      <td>距离系数，数量型名称见下方术语表</td>
+    </tr>
+    <tr>
+      <td>partition</td>
+      <td>分解框架</td>
+    </tr>
+    <tr>
+      <td>R2</td>
+      <td>解释率</td>
+    </tr>
+    <tr>
+      <td>pseudo_F</td>
+      <td>置换多元方差分析伪 F</td>
+    </tr>
+    <tr>
+      <td>p_permanova</td>
+      <td>演示季节检验原始 p</td>
+    </tr>
+    <tr>
+      <td>p_permdisp</td>
+      <td>演示离散度检验原始 p</td>
+    </tr>
+    <tr>
+      <td>n_permutations</td>
+      <td>实际枚举的标签排列数</td>
+    </tr>
+    <tr>
+      <td>lingoes_constant</td>
+      <td>Lingoes 欧氏化的校正常数</td>
+    </tr>
+    <tr>
+      <td>q_permanova</td>
+      <td>九个响应内 BH 校正的季节 p</td>
+    </tr>
+    <tr>
+      <td>q_permdisp</td>
+      <td>九个响应内 BH 校正的离散度 p</td>
+    </tr>
+  </tbody>
+</table></details></section></main></body></html>

@@ -1,0 +1,143 @@
+{
+  "source_commit": "05df483",
+  "source_blob_sha256": "97cd384a31c4fb646ee308308544d4fdcf5acd04048b195f24cdf11fe6d5b92b",
+  "selected_version_zh": "2026-05-19 用户返修 v4",
+  "original_paragraph_blocks": 160,
+  "changes": [
+    {
+      "source_block": 3,
+      "source_block_sha256": "447c065e08cc405750357e038fd20e164fa429dc8b0ba8a08e09bcf8d4ae9a48",
+      "actions_zh": [
+        "同步摘要解释边界"
+      ]
+    },
+    {
+      "source_block": 6,
+      "source_block_sha256": "9856a0594161ec845f38aa03724d55acf15c91c7ec6f2353f0c4377594c3edae",
+      "actions_zh": [
+        "同步英文摘要解释边界"
+      ]
+    },
+    {
+      "source_block": 54,
+      "source_block_sha256": "91ef0a1fa30a33bfe89f9c8aefc65eb8464f545ffbf96c789a68fad704b4a769",
+      "actions_zh": [
+        "校正功能总量与组分的系数混用"
+      ]
+    },
+    {
+      "source_block": 56,
+      "source_block_sha256": "f95f7823a46857ec68e0ad09a968d470895d1382342b3a625414a0373e66cb1f",
+      "actions_zh": [
+        "内部图表路径改为公开汇总或脱敏说明"
+      ]
+    },
+    {
+      "source_block": 58,
+      "source_block_sha256": "feba1741ec26f4cdd5dc0a546e56f829bf84494b31625f4e75728b1949142c19",
+      "actions_zh": [
+        "内部图表路径改为公开汇总或脱敏说明"
+      ]
+    },
+    {
+      "source_block": 64,
+      "source_block_sha256": "34fad137b87ca74d199552a0cfe86e3ece0f29385a3a26769daf952fc3ebed37",
+      "actions_zh": [
+        "内部图表路径改为公开汇总或脱敏说明"
+      ]
+    },
+    {
+      "source_block": 66,
+      "source_block_sha256": "3ba78c475d42dc46dc6aef3193fe22f92e29952120860818f897e1f62b52a0b2",
+      "actions_zh": [
+        "避免把距离对当独立观测进行显著性外推"
+      ]
+    },
+    {
+      "source_block": 68,
+      "source_block_sha256": "1f7bb120a6b03292702a9ff6a990b9678e7d61a220610f0e6e3239d6248dd263",
+      "actions_zh": [
+        "内部图表路径改为公开汇总或脱敏说明"
+      ]
+    },
+    {
+      "source_block": 71,
+      "source_block_sha256": "cd2e1354a3f736b47c2436481ddfb3bce61f70b20e128cc3b59e559ea0ecf3e6",
+      "actions_zh": [
+        "内部图表路径改为公开汇总或脱敏说明"
+      ]
+    },
+    {
+      "source_block": 73,
+      "source_block_sha256": "cdc845418ffaa67f3ec9999876521c62cc11a2b713953906760ab632857379cd",
+      "actions_zh": [
+        "移除具体样点及其距离"
+      ]
+    },
+    {
+      "source_block": 75,
+      "source_block_sha256": "4102f0830fb2216a84fc07b52a6270b569823c37e6f71466ec20752db2ecbe44",
+      "actions_zh": [
+        "修正变量筛选方法名称"
+      ]
+    },
+    {
+      "source_block": 76,
+      "source_block_sha256": "84f7d397f4c5268004e3632ee085aa56cede05f54f2af6366629a14fba3653bf",
+      "actions_zh": [
+        "修正变量筛选方法名称",
+        "内部图表路径改为公开汇总或脱敏说明"
+      ]
+    },
+    {
+      "source_block": 78,
+      "source_block_sha256": "b18049c46f683a11f48942a26d123e07dbb397ceb39668e15b84bbf8f31e090a",
+      "actions_zh": [
+        "内部图表路径改为公开汇总或脱敏说明"
+      ]
+    },
+    {
+      "source_block": 81,
+      "source_block_sha256": "07f3d2f9fe304116b930087e6592774b013aeedc2b8605311904091db16abaa5",
+      "actions_zh": [
+        "内部图表路径改为公开汇总或脱敏说明"
+      ]
+    },
+    {
+      "source_block": 82,
+      "source_block_sha256": "9b8ecf5b33d8fa7146451a7844e0e0e6e9ca1aaee53994b5566559820a75f52d",
+      "actions_zh": [
+        "内部图表路径改为公开汇总或脱敏说明"
+      ]
+    },
+    {
+      "source_block": 89,
+      "source_block_sha256": "348f83a083f45a6a98e6b4fd7f8eebc11766fbaa7a5b8d0bf29a049edd19adbc",
+      "actions_zh": [
+        "修正功能冗余推断强度"
+      ]
+    },
+    {
+      "source_block": 93,
+      "source_block_sha256": "b3f2601f2b02b0274328232886cb0758f9a88121c75b94de87adcd34669471de",
+      "actions_zh": [
+        "修正从样本距离直接推断季节机制"
+      ]
+    },
+    {
+      "source_block": 103,
+      "source_block_sha256": "23e32222f798545719dae2e57d6cf6aafbb385de595a6eadc1c25eb933aa4bc0",
+      "actions_zh": [
+        "同步结论解释边界"
+      ]
+    },
+    {
+      "source_block": 160,
+      "source_block_sha256": "2d732873a0293281a955f8e52a2d9f252962d9beb1868b87f10300da12d3b8f4",
+      "actions_zh": [
+        "个人姓名泛化"
+      ]
+    }
+  ],
+  "note_zh": "目录改由页面导航生成；未附受限原图；日志不保存已移除的敏感原文"
+}

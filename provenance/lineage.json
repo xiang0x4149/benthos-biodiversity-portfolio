@@ -1,0 +1,17 @@
+{
+  "release_date": "2026-09-07",
+  "selected_commit": "05df48394d1f432ac9e16a6663286869338d2bd7",
+  "report_version_zh": "2026-05-19 用户返修 v4，公开脱敏并校订",
+  "history_imported": false,
+  "private_inputs_exported": false,
+  "synthetic_generation_zh": "独立种子从零生成，不拟合真实数据",
+  "excluded_categories_zh": [
+    "导师提供的群落原始输入",
+    "真实样本级衍生矩阵和图形",
+    "原始坐标与环境样本表",
+    "内部沟通与后期版本",
+    "原 Git 对象与旧压缩包",
+    "第三方原文与整库",
+    "本机路径、账号和缓存"
+  ]
+}

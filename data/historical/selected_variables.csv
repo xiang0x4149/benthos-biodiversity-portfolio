@@ -1,0 +1,3 @@
+season_zh,selected_environment_variables,selected_space_variables,n_environment_variables,n_space_variables
+秋季,总氮 (TN)；氨氮 (NH3-N)；溶解氧 (DO),空间主轴 1 (space_PC1)；空间主轴 2 (space_PC2),3,2
+夏季,总氮 (TN)；氨氮 (NH3-N)；总磷 (TP),空间主轴 1 (space_PC1)；空间主轴 2 (space_PC2),3,2

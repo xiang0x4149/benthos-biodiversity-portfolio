@@ -1,0 +1,13 @@
+{
+  "run_id": "2026-05-15_reviewed_trait_gap_completion_merge_v1",
+  "previous_run_id": "2026-05-05_reviewed_local_completion_merge_v2",
+  "retrieval_run_id": "2026-05-10_necessary_all_missing_trait_gap_targets_v1",
+  "candidate_count": 74,
+  "candidate_cell_count": 53,
+  "merged_cell_count": 47,
+  "conflict_cell_count": 6,
+  "missing_before": 445,
+  "missing_after": 398,
+  "added_cells": 47,
+  "generated_at": "2026-05-15T18:36:39"
+}

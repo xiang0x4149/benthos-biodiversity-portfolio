@@ -1,0 +1,14 @@
+[
+  {
+    "season": "秋季",
+    "manuscript_original_total": 0.484,
+    "corrected_total": 0.6431193669043597,
+    "reason_zh": "为与 replacement/richness_difference 组分保持同系数，读取历史 Jaccard 总矩阵聚合；没有用加和伪造来源值"
+  },
+  {
+    "season": "夏季",
+    "manuscript_original_total": 0.585,
+    "corrected_total": 0.7132891624424326,
+    "reason_zh": "为与 replacement/richness_difference 组分保持同系数，读取历史 Jaccard 总矩阵聚合；没有用加和伪造来源值"
+  }
+]
